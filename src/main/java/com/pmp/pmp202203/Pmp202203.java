@@ -32,14 +32,7 @@ public class Pmp202203 {
     }
     
     private static void mainController( String optionSelected){
-//        if (optionSelected.equalsIgnoreCase("M")) {
-//        
-//        } else {
-//            if (optionSelected.equalsIgnoreCase("N")) {
-//            
-//            }
-//        }
-        
+
         switch (optionSelected.toUpperCase()) {
         case "M":
             // llamar a la funcion que maneje la opción
@@ -49,10 +42,10 @@ public class Pmp202203 {
             newCitaTaller();
             break;
         case "A":
-            System.out.println("Opcion A Seleccionada");
+            actualizarCita();
             break;
         case "E":
-            System.out.println("Opcion E Seleccionada");
+            eliminarCita();
             break;
         case "V":
             System.out.println("Opcion V Seleccionada");
@@ -64,7 +57,8 @@ public class Pmp202203 {
             PmpUX.header("Opción no Válida");
         }
     }
-
+    
+    // Refactored Functions
     private static CitaTaller inputForm (CitaTaller baseCita){
         baseCita.setNombreCliente(
             PmpUX.getFieldInput(input, "Nombre del Cliente", baseCita.getNombreCliente())
@@ -95,6 +89,22 @@ public class Pmp202203 {
         return baseCita;
     }
     
+    private static int validarEntradaRegistro() {
+        if (arrCitasTaller.isEmpty()) {
+            System.out.println("No Hay Datos!");
+            return -1;
+        }
+        int index = Integer.getInteger(
+            PmpUX.getFieldInput(input, "Número de Linea: ", "1")
+        );
+        if (index >= 0 || index < arrCitasTaller.size()) {
+            return index - 1;
+        }
+        return -1;
+    }
+    
+    
+    // Crud Functions
     private static void newCitaTaller(){
         CitaTaller newCitaTallerIns = new CitaTaller();
         newCitaTallerIns.setNombreCliente("Fulanito de Tal");
@@ -127,16 +137,18 @@ public class Pmp202203 {
     }
     
     private static void actualizarCita() {
-        if (arrCitasTaller.isEmpty()) {
-            System.out.println("No Hay Datos para Actualizar!");
-            return;
-        }
-        int index = Integer.getInteger(
-            PmpUX.getFieldInput(input, "Número de Linea a Actualizar", "1")
-        );
-        if (index >= 0 || index < arrCitasTaller.size()) {
+        int index = validarEntradaRegistro();
+        if (index >= 0) {
             CitaTaller updateCitaTaller = arrCitasTaller.get(index);
             updateCitaTaller = inputForm(updateCitaTaller);
+            System.out.println("Registro Modificado");
+        }
+    }
+    
+    private static void eliminarCita(){
+        int index = validarEntradaRegistro();
+        if (index >= 0) {
+            arrCitasTaller.remove(index);
             System.out.println("Registro Modificado");
         }
     }
