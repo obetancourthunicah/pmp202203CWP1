@@ -94,7 +94,7 @@ public class Pmp202203 {
             System.out.println("No Hay Datos!");
             return -1;
         }
-        int index = Integer.getInteger(
+        int index = Integer.parseInt(
             PmpUX.getFieldInput(input, "Número de Linea: ", "1")
         );
         if (index >= 0 || index < arrCitasTaller.size()) {
