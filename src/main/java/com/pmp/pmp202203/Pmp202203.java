@@ -34,7 +34,7 @@ public class Pmp202203 {
     }
     
     private static void mainController( String optionSelected){
-
+        arrCitasTaller = tallerDao.obtenerCitas();
         switch (optionSelected.toUpperCase()) {
         case "M":
             // llamar a la funcion que maneje la opción
@@ -91,18 +91,20 @@ public class Pmp202203 {
         return baseCita;
     }
     
-    private static int validarEntradaRegistro() {
+    private static CitaTaller validarEntradaRegistro() {
         if (arrCitasTaller.isEmpty()) {
             System.out.println("No Hay Datos!");
-            return -1;
+            return null;
         }
         int index = Integer.parseInt(
             PmpUX.getFieldInput(input, "Número de Linea: ", "1")
         );
-        if (index >= 0 || index < arrCitasTaller.size()) {
-            return index - 1;
+        for (int i = 0; i < arrCitasTaller.size(); i++){
+            if (index == arrCitasTaller.get(i).getId()) {
+                return arrCitasTaller.get(i);
+            }
         }
-        return -1;
+        return null;
     }
     
     // Crud Functions
@@ -122,8 +124,8 @@ public class Pmp202203 {
         tallerDao.insertCita(newCitaTallerIns);
         arrCitasTaller.add(newCitaTallerIns);
     }
-
     private static void mostrarCitas() {
+        arrCitasTaller = tallerDao.obtenerCitas();
         if (arrCitasTaller.size() > 0 ) {
             for ( int i = 0; i < arrCitasTaller.size(); i++) {
                 CitaTaller cita = arrCitasTaller.get(i);
@@ -141,20 +143,18 @@ public class Pmp202203 {
             System.out.println("No hay datos que mostrar.");
         }
     }
-    
     private static void actualizarCita() {
-        int index = validarEntradaRegistro();
-        if (index >= 0) {
-            CitaTaller updateCitaTaller = arrCitasTaller.get(index);
+        CitaTaller updateCitaTaller = validarEntradaRegistro();
+        if(updateCitaTaller!=null){
             updateCitaTaller = inputForm(updateCitaTaller);
+            tallerDao.updateCita(updateCitaTaller);
             System.out.println("Registro Modificado");
         }
     }
-    
     private static void eliminarCita(){
-        int index = validarEntradaRegistro();
-        if (index >= 0) {
-            arrCitasTaller.remove(index);
+        CitaTaller deleteCitaTaller = validarEntradaRegistro();
+        if (deleteCitaTaller != null) {
+            tallerDao.deleteCita(deleteCitaTaller);
             System.out.println("Registro Modificado");
         }
     }

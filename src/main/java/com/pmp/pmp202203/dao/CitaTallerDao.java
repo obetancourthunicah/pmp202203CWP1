@@ -7,7 +7,9 @@ package com.pmp.pmp202203.dao;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.lang.Exception;
+import java.util.ArrayList;
 import com.pmp.pmp202203.CitaTaller;
 /**
  *
@@ -77,6 +79,77 @@ public class CitaTallerDao {
             System.err.println(ex.getMessage());        
         }
         
+    }
+    
+    public void updateCita(CitaTaller updateCita) {
+        try {
+            String sqlStrUpdate = "UPDATE CITATALLER set nombreCliente = ? ," +
+                " telefonoCliente = ?," +
+                " placaCarro = ?," +
+                " modeloCarro = ?," +
+                " motivoCita = ?," +
+                " anioCita = ?," +
+                " mesCita = ?," +
+                " diaCita = ?," +
+                " hora24Cita = ?," +
+                " estadoCita = ? where id = ?;";
+            PreparedStatement comando = this.conn.prepareStatement(sqlStrUpdate);
+            comando.setString(1, updateCita.getNombreCliente());
+            comando.setString(2, updateCita.getTelefonoCliente());
+            comando.setString(3, updateCita.getPlacaCarro());
+            comando.setString(4, updateCita.getModeloCarro());
+            comando.setString(5, updateCita.getMotivoCita());
+            comando.setInt(6, updateCita.getAnioCita());
+            comando.setInt(7, updateCita.getMesCita());
+            comando.setInt(8, updateCita.getDiaCita());
+            comando.setInt(9, updateCita.getHora24Cita());
+            comando.setString(10, updateCita.getEstadoCita());
+            comando.setInt(11, updateCita.getId());
+            comando.executeUpdate();
+            comando.close();
+        } catch(Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    public void deleteCita(CitaTaller deleteCita) {
+         try {
+            String sqlStrDelete = "DELETE FROM CITATALLER where id = ?;";
+            PreparedStatement comando = this.conn.prepareStatement(sqlStrDelete);
+            comando.setInt(1, deleteCita.getId());
+            comando.executeUpdate();
+            comando.close();
+        } catch(Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    public ArrayList<CitaTaller> obtenerCitas() {
+        try {
+            String sqlstr = "SELECT * from CITATALLER;";
+            Statement comando = conn.createStatement();
+            ArrayList citas = new ArrayList<CitaTaller>();
+            ResultSet registros = comando.executeQuery(sqlstr);
+            while (registros.next()){
+                CitaTaller citaTaller = new CitaTaller();
+                citaTaller.setId(registros.getInt("id"));
+                citaTaller.setNombreCliente(registros.getString("nombreCliente"));
+                citaTaller.setTelefonoCliente(registros.getString("telefonoCliente"));
+                citaTaller.setPlacaCarro(registros.getString("placaCarro"));
+                citaTaller.setModeloCarro(registros.getString("modeloCarro"));
+                citaTaller.setMotivoCita(registros.getString("motivoCita"));
+                citaTaller.setAnioCita(registros.getInt("anioCita"));
+                citaTaller.setMesCita(registros.getInt("mesCita"));
+                citaTaller.setDiaCita(registros.getInt("diaCita"));
+                citaTaller.setHora24Cita(registros.getInt("hora24Cita"));
+                citaTaller.setEstadoCita(registros.getString("estadoCita"));
+                citas.add(citaTaller);
+            }
+            return citas;
+        } catch (Exception ex){
+            System.err.println(ex.getMessage());
+            return new ArrayList<CitaTaller>();
+        }
     }
 }
  
