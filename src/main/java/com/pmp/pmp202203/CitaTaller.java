@@ -91,7 +91,13 @@ public class CitaTaller {
         // Validar la entrada de datos
         this.estadoCita = estadoCita;
     }
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     private String nombreCliente;
     private String telefonoCliente;
@@ -103,5 +109,6 @@ public class CitaTaller {
     private Integer diaCita;
     private Integer hora24Cita;
     private String estadoCita;
-    
+    private Integer id;
+
 }

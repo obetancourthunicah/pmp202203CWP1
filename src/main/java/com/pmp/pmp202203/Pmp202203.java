@@ -7,7 +7,7 @@ package com.pmp.pmp202203;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-
+import com.pmp.pmp202203.dao.CitaTallerDao;
 /**
  *
  * @author obetancourth
@@ -15,11 +15,13 @@ import java.util.ArrayList;
 public class Pmp202203 {
     public static Scanner input;
     public static ArrayList<CitaTaller> arrCitasTaller;
-    
+    public static CitaTallerDao tallerDao;
     public static void main(String[] args) {
         // Crear una instancia de scanner
         input = new Scanner(System.in);
         arrCitasTaller = new ArrayList();
+        
+        tallerDao = new CitaTallerDao();
         
         PmpUX.header("CRUD Taller OJBA");
         String optionSelected = "";
@@ -103,7 +105,6 @@ public class Pmp202203 {
         return -1;
     }
     
-    
     // Crud Functions
     private static void newCitaTaller(){
         CitaTaller newCitaTallerIns = new CitaTaller();
@@ -113,7 +114,12 @@ public class Pmp202203 {
         newCitaTallerIns.setMesCita(9);
         newCitaTallerIns.setDiaCita(8);
         newCitaTallerIns.setHora24Cita(17);
+        newCitaTallerIns.setTelefonoCliente("0000000");
+        newCitaTallerIns.setMotivoCita("Se me arruino la maquina");
+        newCitaTallerIns.setEstadoCita("ACT");
+        newCitaTallerIns.setModeloCarro("Toyotita Mil");
         newCitaTallerIns = inputForm(newCitaTallerIns);
+        tallerDao.insertCita(newCitaTallerIns);
         arrCitasTaller.add(newCitaTallerIns);
     }
 
@@ -152,4 +158,6 @@ public class Pmp202203 {
             System.out.println("Registro Modificado");
         }
     }
+    
+    // TODO Ver Detalle
 }
